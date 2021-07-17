@@ -1,0 +1,11 @@
+{
+  "name": "meet_slider",
+  "version": "1.0.0",
+  "description": "Esta es una app para video llamadas",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chehin Juan Martin - Slider",
+  "license": "ISC"
+}
