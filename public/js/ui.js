@@ -32,6 +32,40 @@ export const showCallingDialog = (rejectCallHandler) => {
     dialog.appendChild(callingDialog);
 }
 
+export const showInfoDialog = () => {
+    let infoDialog = null;
+
+    if (preOfferAnswer === constants.preOfferAnswer.CALL_REJECT) {
+        infoDialog = elements.getInfoDialog(
+            'Llamada rechazada',
+            'Se rechazo tu llamada'
+        );
+    }
+
+    if (preOfferAnswer === constants.preOfferAnswer.CALLEE_NOT_FOUND) {
+        infoDialog = elements.getInfoDialog(
+            'Llamada desconectada',
+            'Chequea tu codigo personal'
+        );
+    }
+
+    if (preOfferAnswer === constants.preOfferAnswer.CALLEE_NOT_FOUND) {
+        infoDialog = elements.getInfoDialog(
+            'Inconveniente en la llamda',
+            'Probablemente llamada ocupada.Intenta de nuevo mas tarde'
+        );
+    }
+
+    if (infoDialog) {
+        const dialog = document.getElementById('dialog');
+        dialog.appendChild(infoDialog);
+
+        setTimeout(() => {
+            removeAllDialogs();
+        }, [4000]);
+    }
+};
+
 export const removeAllDialogs = () => {
 
     // Remuevo todos los dialogos HTML

@@ -23,7 +23,7 @@ export const sendPreOffer = (callType, callePersonalCode) => {
 };
 
 export const handlePreOffer = (data) => {
-    console.log('data es : ', data);
+    // console.log('data es : ', data);
     const { callType, callerSocketId } = data;
 
     connectedUserDetails = {
@@ -71,10 +71,11 @@ export const handlePreOfferAnswer = (data) => {
     ui.removeAllDialogs();
 
     if (preOfferAnswer === constants.preOfferAnswer.CALLEE_NOT_FOUND) {
-
+        ui.showInfoDialog(preOfferAnswer);
     }
 
     if (preOfferAnswer === constants.preOfferAnswer.CALL_UNAVAILABLE) {
+        ui.showInfoDialog(preOfferAnswer);
 
     }
 

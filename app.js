@@ -17,9 +17,11 @@ let connectedPeers = [];
 
 io.on("connection", (socket) => {
     connectedPeers.push(socket.id);
-    console.log(connectedPeers);
+    console.log('entra : ', connectedPeers);
 
     socket.on("pre-offer", (data) => {
+
+        console.log('data 1 es : ', data);
         console.log("pre-offer-came")
         const { callePersonalCode, callType } = data;
 
@@ -36,6 +38,11 @@ io.on("connection", (socket) => {
             };
 
             io.to(callePersonalCode).emit("pre-offer", data);
+        } else {
+            const data = {
+                preOfferAnswer: "CALLE_NOT_FOUND",
+            }
+            io.to(socket.id).emit('pre-offer-answer', data);
         }
     });
 
@@ -44,9 +51,10 @@ io.on("connection", (socket) => {
         console.log(data);
 
         const { callerSocketId } = data;
+        callePersonalCode = data.preOfferAnswer;
 
         const connectedPeer = connectedPeers.find(
-            (peerSocketId) => peerSocketId === calleePersonalCode
+            (peerSocketId) => peerSocketId === callePersonalCode
         );
 
         if (connectedPeer) {
