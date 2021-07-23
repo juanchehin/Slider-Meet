@@ -22,6 +22,35 @@ export const showIncomingCallDialog = (callType, acceptCallHandler, rejectCallHa
     dialog.appendChild(getIncomingCallDialog);
 };
 
+export const showCallElements = (callType) => {
+    const finishConnectionChatButtonContainer = document.getElementById(
+        "finish_chat_button_container"
+    );
+    showElement(finishConnectionChatButtonContainer);
+
+    const newMessageInput = document.getElementById("new_message");
+    showElement(newMessageInput);
+
+    disabledDashoard();
+};
+
+export const showVideoCallElements = () => {
+    const callButtons = document.getElementById('call_buttons');
+    showElement(callButtons);
+
+    const placeholder = document.getElementById('video_placeholder');
+    hideElement(placeholder);
+
+    const remoteVideo = document.getElementById('remote_video');
+    showElement(remoteVideo);
+
+    const newMessageInput = document.getElementById("new_message");
+    showElement(newMessageInput);
+
+    disabledDashoard();
+
+}
+
 export const showCallingDialog = (rejectCallHandler) => {
     const callingDialog = elements.getIncomingCallDialog(rejectCallHandler);
 
@@ -72,3 +101,31 @@ export const removeAllDialogs = () => {
     const dialog = document.getElementById('dialog');
     dialog.querySelectorAll("*").forEach((dialog) => dialog.remove());
 }
+
+// Funciones de ayuda
+
+const enableDashoard = () => {
+    const doshboardBloquer = document.getElementById('dashboard_blur');
+    if (doshboardBloquer.classList.contains('display_none')) {
+        doshboardBloquer.classList.add('display_none');
+    }
+};
+
+const disabledDashoard = () => {
+    const doshboardBloquer = document.getElementById('dashboard_blur');
+    if (doshboardBloquer.classList.contains('display_none')) {
+        doshboardBloquer.classList.remove('display_none');
+    }
+};
+
+const hideElement = (element) => {
+    if (!elements.classList.contains('display_none')) {
+        element.classList.add('display_none');
+    }
+};
+
+const showElement = (element) => {
+    if (elements.classList.contains('display_none')) {
+        element.classList.remove('display_none');
+    }
+};
