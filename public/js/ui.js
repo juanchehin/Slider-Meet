@@ -9,6 +9,27 @@ export const updatePersonalCode = (personalCode) => {
     personalCodeParagraph.innerHTML = personalCode;
 };
 
+export const updateLocalVideo = (stream) => {
+    console.log('updateLocalVideo')
+    const localVideo = document.getElementById('local_video');
+    console.log('updateLocalVideo stream ', stream)
+
+    localVideo.srcObject = stream;
+
+    localVideo.addEventListener("loadedmetadata", () => {
+        localVideo.play();
+    });
+};
+
+export const updateRemoteVideo = (stream) => {
+    const remoteVideo = document.getElementById('remote_video');
+    remoteVideo.srcObject = stream;
+
+    localVideo.addEventListener("loadedmetadata", () => {
+        localVideo.play();
+    });
+};
+
 export const showIncomingCallDialog = (callType, acceptCallHandler, rejectCallHandler) => {
     const callTypeInfo = callType === constants.callType.CHAT_PERSONAL_CODE ? "Chat" : "Video";
 
@@ -35,6 +56,8 @@ export const showCallElements = (callType) => {
 };
 
 export const showVideoCallElements = () => {
+    console.log('showVideoCallElements es : ');
+
     const callButtons = document.getElementById('call_buttons');
     showElement(callButtons);
 

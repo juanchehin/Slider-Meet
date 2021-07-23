@@ -1,9 +1,68 @@
 import * as wss from './wss.js';
 import * as constants from './constants.js';
 import * as ui from './ui.js';
+import * as store from './store.js';
+
 
 let connectedUserDetails;
-console.log('pasa es : ');
+let peerConnection;
+
+const defaultConstrains = {
+    audio: true,
+    video: true
+}
+
+const configuration = {
+    iceServers: [{
+        urls: 'stun:stun.l.google.com:13902'
+    }]
+}
+
+
+export const getLocalPreview = () => {
+    navigator.mediaDevices.getUserMedia(defaultConstrains)
+        .then((stream) => {
+            ui.updatePersonalCode(stream);
+            store.setLocalStream(stream);
+        })
+        .catch((err) => {
+            console.log("error al acceder a la camara");
+            console.log(err);
+        });
+};
+
+const createPeerConnection = () => {
+    peerConnection = new RTCPeerConnection(configuration);
+
+    peerConnection.onicecandidate = (event) => {
+        console.log("getting ice candidates from stun server");
+        if (event.candidate) {
+
+        }
+    }
+
+    peerConnection.onconnectionstatechange = (event) => {
+        if (peerConnection.connectionState === 'connected') {
+            console.log("getting ice candidates from stun server");
+        }
+    }
+
+    const remoteStream = new MediaStream();
+    store.setRemoteStream(remoteStream);
+    ui.updateRemoteVideo(remoteStream);
+
+    peerConnection.ontrack = (event) => {
+        remoteStream.addTrack(event.track);
+    }
+
+    if (connectedUserDetails.callType === constants.callType.VIDEO_PERSONAL_CODE) {
+        const localStream = store.getState().localStream;
+
+        for (const track of localStream.getTracks()) {
+            peerConnection.addTrack(track, localStream);
+        }
+    }
+};
 
 export const sendPreOffer = (callType, callePersonalCode) => {
     connectedUserDetails = {
@@ -86,5 +145,33 @@ export const handlePreOfferAnswer = (data) => {
 
     if (preOfferAnswer === constants.preOfferAnswer.CALL_ACCEPTED) {
         ui.showCallElements(connectedUserDetails.callType);
+        createPeerConnection();
+        sendWebRTCOffer();
     }
 }
+
+const sendWebRTCOffer = async() => {
+    const offer = await peerConnection.createOffer();
+    await peerConnection.setLocalDescription(offer);
+    wss.sendDataUsingWebRTCSignaling({
+        connectedUserSocketId: connectedUserDetails.socketId,
+        type: constants.webRTCSignaling.OFFER,
+        offer: offer,
+    });
+};
+
+export const handleWebRTCOffer = async(data) => {
+    await peerConnection.setRemoteDescription(data.offer);
+    const answer = await peerConnection.createAnswer();
+    await peerConnection.setLocalDescription(answer);
+    wss.sendDataUsingWebRTCSignaling({
+        connectedUserSockerId: connectedUserDetails.socketId,
+        type: constants.webRTCSignaling.ANSWER,
+        answer: answer,
+    });
+};
+
+export const handleWebRTCAnswer = async(data) => {
+    console.log("handling webRTC Answer");
+    await peerConnection.setRemoteDescription(data.answer);
+};
