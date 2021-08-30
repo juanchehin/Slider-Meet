@@ -1,3 +1,5 @@
+/* Este archivo contiene la logica de conexion de WebRTC: comunicacion en tiempo real*/
+
 import * as wss from './wss.js';
 import * as constants from './constants.js';
 import * as ui from './ui.js';
@@ -6,6 +8,8 @@ import * as store from './store.js';
 
 let connectedUserDetails;
 let peerConnection;
+
+console.log("Entra webRTC.js");
 
 const defaultConstrains = {
     audio: true,
@@ -22,7 +26,7 @@ const configuration = {
 export const getLocalPreview = () => {
     navigator.mediaDevices.getUserMedia(defaultConstrains)
         .then((stream) => {
-            ui.updatePersonalCode(stream);
+            // ui.updatePersonalCode(stream);
             store.setLocalStream(stream);
         })
         .catch((err) => {
@@ -37,9 +41,13 @@ const createPeerConnection = () => {
     peerConnection.onicecandidate = (event) => {
         console.log("getting ice candidates from stun server");
         if (event.candidate) {
-
+            wss.sendDataUsingWebRTCSignaling({
+                connectedUserSockerId: connectedUserDetails.socketId,
+                type: constants.webRTCSignaling.ICE_CANDIDATE,
+                candidate: event.candidate,
+            });
         }
-    }
+    };
 
     peerConnection.onconnectionstatechange = (event) => {
         if (peerConnection.connectionState === 'connected') {
@@ -64,6 +72,7 @@ const createPeerConnection = () => {
     }
 };
 
+// 
 export const sendPreOffer = (callType, callePersonalCode) => {
     connectedUserDetails = {
         callType,
@@ -76,7 +85,9 @@ export const sendPreOffer = (callType, callePersonalCode) => {
             callType,
             callePersonalCode
         };
+        // Muestro el dialogo de llamada en emisor
         ui.showIncomingCallDialog(callingDialogRejectCallHandler);
+        // Envio la preoferta a receptor
         wss.sendPreOffer(data);
     }
 };
@@ -112,7 +123,7 @@ const rejectCallHandler = () => {
 }
 
 const callingDialogRejectCallHandler = () => {
-    console.log('rejection the call');
+    console.log("rejecting the call");
 }
 
 const sendPreOfferAnswer = (preOfferAnswer) => {
@@ -175,3 +186,47 @@ export const handleWebRTCAnswer = async(data) => {
     console.log("handling webRTC Answer");
     await peerConnection.setRemoteDescription(data.answer);
 };
+
+export const handleWebRTCCandidate = async(data) => {
+    console.log('handling incoming web RTC')
+    try {
+        await peerConnection.addIceCandidate(data.candidate)
+    } catch (err) {
+        console.log("error al recibir el candidato", err)
+    }
+}
+
+let screenSharingStream;
+
+export const switchBetweenCameraAndScreenSharing = async(screenSharingActive) => {
+    if (screenSharingActive) {
+
+    } else {
+        console.log('switcgin for screen sharing');
+        try {
+            screenSharingStream = await navigator.mediaDevices.getDisplayMedia({
+                video: true
+            });
+            store.setScreenSharingStream(screenSharingStream);
+
+            // replace track which sender is sending
+            const senders = peerConnection.getSenders();
+
+            const sender = senders.find((sender) => {
+                sender.track.kind === screenSharingStreamg.getVideoTracks()[0].kind;
+            });
+
+            if (sender) {
+                sender.replaceTrack(screenSharingStreamg.getVideoTracks().getVideoTracks()[0]);
+            }
+
+            store.setScreenSharingActive(!screenSharingActive);
+
+            ui.updateLocalVideo(screenSharingStream);
+        } catch (err) {
+            console.error(
+                'error ocurred when trying to get screen sharing stream'
+            )
+        }
+    }
+}

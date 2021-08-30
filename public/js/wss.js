@@ -6,6 +6,9 @@ import * as constants from "./constants.js";
 
 let socketIO = null;
 
+console.log("Entra wss.js");
+
+
 export const registerSocketEvents = (socket) => {
     socket.on("connect", () => {
         socketIO = socket;
@@ -30,6 +33,9 @@ export const registerSocketEvents = (socket) => {
                 break;
             case constants.webRTCSignaling.ANSWER:
                 webRTCHandler.handleWebRTCOffer(data);
+                break;
+            case constants.webRTCSignaling.ICE_CANDIDATE:
+                webRTCHandler.handleWebRTCCandidate(data);
                 break;
             default:
                 return;

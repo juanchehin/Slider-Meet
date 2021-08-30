@@ -1,3 +1,6 @@
+console.log("Entra store.js");
+
+
 // Estado inicial
 let state = {
     socketId: null,

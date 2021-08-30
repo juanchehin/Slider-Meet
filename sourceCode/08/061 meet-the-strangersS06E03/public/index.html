@@ -1,23 +1,20 @@
 <html>
-
-<head>
-    <title>Meet Slider</title>
-    <link rel='stylesheet' href='./css/style.css'>
-</head>
-
-<body>
-    <div class='main_container'>
+    <head>
+        <title>Meet the strangers</title>
+        <link rel='stylesheet' href='./css/style.css'>
+    </head>
+    <body>
+        <div class='main_container'>
         <div class='dashboard_container'>
             <div class='logo_container'>
                 <img src='./utils/images/logo.png'></img>
             </div>
             <div>
                 <div class='description_container'>
-                    <!--<p class='description_container_paragraph'>
-                         Talk with other user by passing his personal code or talk with strangers! 
-                    </p>-->
+                    <p class='description_container_paragraph'>
+                        Talk with other user by passing his personal code or talk with strangers!
+                    </p>
                 </div>
-                <br><br><br><br>
                 <div class='personal_code_container'>
                     <div class='personal_code_title_container'>
                         <p class='personal_code_title_paragraph'>
@@ -31,40 +28,40 @@
                         </button>
                     </div>
                 </div>
-            </div>
-            <div class='personal_code_connecting_container'>
-                <p class='personal_code_connecting_paragraph'>Personal Code</p>
-                <div class='personal_code_connecting_input_container'>
-                    <input class='personal_code_input' id='personal_code_input'></input>
                 </div>
-                <div class='personal_code_connecting_buttons_container'>
-                    <button class='connecting_button' id='personal_code_chat_button'>
+                <div class='personal_code_connecting_container'>
+                    <p class='personal_code_connecting_paragraph'>Personal Code</p>
+                    <div class='personal_code_connecting_input_container'>
+                        <input class='personal_code_input' id='personal_code_input'></input>
+                    </div>
+                    <div class='personal_code_connecting_buttons_container'>
+                        <button class='connecting_button' id='personal_code_chat_button'>
                             <img src='./utils/images/chatButton.png' class='connecting_buttons_image'></img>
                         </button>
-                    <button class='connecting_button' id='personal_code_video_button'>
+                        <button class='connecting_button' id='personal_code_video_button'>
                             <img src='./utils/images/videoButton.png' class='connecting_buttons_image'></img>
                         </button>
+                    </div>
                 </div>
-            </div>
-            <div class='stranger_connecting_container'>
-                <p class='stranger_title_container'>Externo</p>
-                <div class='stranger_buttons_container'>
-                    <button class='connecting_button' id='stranger_chat_button'>
+                <div class='stranger_connecting_container'>
+                    <p class='stranger_title_container'>Stranger</p>
+                    <div class='stranger_buttons_container'>
+                        <button class='connecting_button' id='stranger_chat_button'>
                             <img src='/utils/images/chatButton.png' class='connecting_buttons_image'></img>
                         </button>
-                    <button class='connecting_button' id='stranger_video_button'>
+                        <button class='connecting_button' id='stranger_video_button'>
                             <img src='/utils/images/videoButton.png' class='connecting_buttons_image'></img>
                         </button>
+                    </div>
                 </div>
-            </div>
-            <div class='checkbox_container'>
-                <div class='checkbox_connection' id='allow_strangers_checkbox'>
-                    <img id='allow_strangers_checkbox_image' class='' src='./utils/images/check.png'></img>
+                <div class='checkbox_container'>
+                    <div class='checkbox_connection' id='allow_strangers_checkbox'>
+                        <img id='allow_strangers_checkbox_image' class='' src='./utils/images/check.png'></img>
+                    </div>
+                    <p class='checkbox_container_paragraph'>Allow connection from strangers</p>
                 </div>
-                <p class='checkbox_container_paragraph'>Aceptar todas las conexiones de afuera</p>
+                <div class='dashboard_blur display_none' id='dashboard_blur'></div>
             </div>
-            <div class='dashboard_blur display_none' id='dashboard_blur'></div>
-        </div>
         <div class='call_container'>
             <div class='videos_container'>
                 <div id='video_placeholder' class='videos_placeholder'>
@@ -118,22 +115,16 @@
                 </button>
             </div>
         </div>
-        <div id='dialog'></div>
-    </div>
-
-    <!-- Importa el orden y debe estar aqui, justo antes del cierre del body-->
-    <script src='/socket.io/socket.io.js'></script>
-    <script src='./js/elements.js' type='module'></script>
-    <script src='./js/constants.js' type='module'></script>
-    <script src='./js/ui.js' type='module'></script>
-    <script src='./js/wss.js' type='module'></script>
-    <script src='./js/store.js' type='module'></script>
-    <script src='./js/webRTCHandler.js' type='module'></script>
-    <script src='./js/recordingUtils.js' type='module'></script>
-    <script src='./js/main.js' type='module'></script>
-
-    <!-- <script src='./js/recordingUtils.js' type='module'></script> -->
-    <script src='./js/main.js' type='module'></script>
-</body>
-
+        <div id='dialog'></div>    
+        </div>
+        <script src='/socket.io/socket.io.js'></script>
+        <script src='./js/elements.js' type='module'></script>
+        <script src='./js/constants.js' type='module'></script>
+        <script src='./js/ui.js' type='module'></script>
+        <script src='./js/wss.js' type='module'></script>
+        <script src='./js/store.js' type='module'></script>
+        <script src='./js/webRTCHandler.js' type='module'></script>
+        <script src='./js/recordingUtils.js' type='module'></script>
+        <script src='./js/main.js' type='module'></script>
+    </body>
 </html>

@@ -1,11 +1,14 @@
-export const getIncomingCallDialog = (
-    callTypeInfo,
-    acceptCallHandler,
-    rejectCallHandler
-) => {
+/* Este archivo contiene */
+
+console.log("Entra element.js");
+
+// Modal con "Llamada entrante" 
+// Se dispara al hacer clic en "Video call".
+export const getIncomingCallDialog = (callTypeInfo, acceptCallHandler, rejectCallHandler) => {
+
     console.log("getting incoming call dialog");
     const dialog = document.createElement('div');
-    dialog.classList.add('dialog_wrapper');
+    dialog.classList.add('dialog_wrapper'); // Añado la clase dialog_wrapper (ver carpeta CSS)
 
     const dialogContent = document.createElement("div");
     dialogContent.classList.add("dialog_content");
@@ -13,7 +16,7 @@ export const getIncomingCallDialog = (
 
     const title = document.createElement('p');
     title.classList.add('dialog_title');
-    title.innerHTML = `Incoming ${callTypeInfo} call`;
+    title.innerHTML = `Llamada entrante de tipo : ${callTypeInfo}`;
 
     const imageContainer = document.createElement('div');
     imageContainer.classList.add('dialog_image_container');
@@ -46,8 +49,10 @@ export const getIncomingCallDialog = (
     dialogContent.appendChild(imageContainer);
     dialogContent.appendChild(buttonContainer);
 
+    // Boton de aceptar llamada
     acceptCallButton.addEventListener('click', () => {
-        acceptCallHandler();
+        console.log("entra acceptCallButton");
+        // acceptCallHandler();
     });
 
     rejectCallButton.addEventListener('click', () => {
@@ -56,7 +61,10 @@ export const getIncomingCallDialog = (
     return dialog;
 };
 
+// Obtengo el dialogo de la llamada
 export const getCallingDialog = (rejectCallHandler) => {
+    console.log("element.js getCallingDialog");
+
     const dialog = document.createElement('div');
     dialog.classList.add('dialog_wrapper');
 
@@ -80,10 +88,13 @@ export const getCallingDialog = (rejectCallHandler) => {
 
     const hangUpCallButton = document.createElement("button");
     hangUpCallButton.classList.add('dialog_reject_call_button');
+
     const hangUpCallImg = document.createElement('img');
     hangUpCallImg.classList.add('dialog_button_image');
+
     const rejectCallImgPath = './utils/images/rejectCall.png';
     hangUpCallButton.src = rejectCallImgPath;
+
     rejectCallButton.append(hangUpCallImg);
     buttonContainer.appendChild(hangUpCallButton);
 

@@ -1,17 +1,21 @@
+/* Este archivo sirve para controlar la interfaz de usuario (ui) */
+
 import * as constants from "./constants.js";
 import * as elements from "./elements.js";
+
+console.log("entra ui.js");
 
 export const updatePersonalCode = (personalCode) => {
     const personalCodeParagraph = document.getElementById(
         "personal_code_paragraph"
     );
-    console.log('personal code es : ', personalCode);
+    console.log('personal code 1 es : ', personalCode);
     personalCodeParagraph.innerHTML = personalCode;
 };
 
 export const updateLocalVideo = (stream) => {
     console.log('updateLocalVideo')
-    const localVideo = document.getElementById('local_video');
+    const localVideo = document.getElementById('local_video'); // Recuadro con imagen de camara
     console.log('updateLocalVideo stream ', stream)
 
     localVideo.srcObject = stream;
@@ -30,10 +34,11 @@ export const updateRemoteVideo = (stream) => {
     });
 };
 
+// Muestro Modal con cartel de "Llamada saliente"
 export const showIncomingCallDialog = (callType, acceptCallHandler, rejectCallHandler) => {
-    const callTypeInfo = callType === constants.callType.CHAT_PERSONAL_CODE ? "Chat" : "Video";
+    const callTypeInfo = callType === constants.callType.CHAT_PERSONAL_CODE ? "Chat" : "Video"; // Selecciono el tipo de llamada
 
-    const getIncomingCallDialog = elements.getIncomingCallDialog(callType, acceptCallHandler, rejectCallHandler);
+    const getIncomingCallDialog = elements.getIncomingCallDialog(callType, acceptCallHandler, rejectCallHandler); // Muestra modal en receptor
 
     // Remuevo todos los dialogos HTML
     const dialog = document.getElementById('dialog');
@@ -54,6 +59,23 @@ export const showCallElements = (callType) => {
 
     disabledDashoard();
 };
+
+const micOnImgSrc = './utils/images/mic.png';
+const micOffImgSrc = './utils/images/micOff.png';
+
+// ui call buttons
+export const updateMicButton = (micActive) => {
+    const micButtonImage = document.getElementById('mic_button_image');
+    micButtonImage.src = micActive ? micOffImgSrc : micOnImgSrc;
+}
+
+const cameraOnImgSrc = './utils/images/camera.png';
+const cameraOffImgSrc = './utils/images/cameraOff.png';
+
+export const updateCameraButton = (cameraActive) => {
+    const cameraButtonImage = document.getElementById('camera_button_image');
+    cameraButtonImage.src = cameraActive ? cameraOffImgSrc : cameraOnImgSrc;
+}
 
 export const showVideoCallElements = () => {
     console.log('showVideoCallElements es : ');
@@ -104,7 +126,7 @@ export const showInfoDialog = () => {
     if (preOfferAnswer === constants.preOfferAnswer.CALLEE_NOT_FOUND) {
         infoDialog = elements.getInfoDialog(
             'Inconveniente en la llamda',
-            'Probablemente llamada ocupada.Intenta de nuevo mas tarde'
+            'Probablemente llamada ocupada.Intenta nuevamente mas tarde'
         );
     }
 
@@ -148,7 +170,7 @@ const hideElement = (element) => {
 };
 
 const showElement = (element) => {
-    if (elements.classList.contains('display_none')) {
+    if (element.classList.contains('display_none')) {
         element.classList.remove('display_none');
     }
 };
