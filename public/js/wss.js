@@ -10,10 +10,11 @@ console.log("Entra wss.js");
 
 
 export const registerSocketEvents = (socket) => {
+    console.log("pasa registerSocketEvents");
+    socketIO = socket;
+    console.log("socketIO es : ", socketIO);
     socket.on("connect", () => {
-        socketIO = socket;
-
-        console.log(" conexion exitosa con wss server wss");
+        console.log("succesfully connected to socket.io server");
         store.setSocketId(socket.id);
         ui.updatePersonalCode(socket.id);
     });
@@ -32,7 +33,7 @@ export const registerSocketEvents = (socket) => {
                 webRTCHandler.handleWebRTCOffer(data);
                 break;
             case constants.webRTCSignaling.ANSWER:
-                webRTCHandler.handleWebRTCOffer(data);
+                webRTCHandler.handleWebRTCAnswer(data);
                 break;
             case constants.webRTCSignaling.ICE_CANDIDATE:
                 webRTCHandler.handleWebRTCCandidate(data);
@@ -44,14 +45,16 @@ export const registerSocketEvents = (socket) => {
 };
 
 export const sendPreOffer = (data) => {
-    console.log("emmiting to server pre offer");
+    console.log("emmiting to server pre offer event");
     socketIO.emit("pre-offer", data);
 };
 
 export const sendPreOfferAnswer = (data) => {
+    console.log("emmiting to server sendPreOfferAnswer");
     socketIO.emit("pre-offer-answer", data);
 };
 
 export const sendDataUsingWebRTCSignaling = (data) => {
+    console.log("emmiting to server sendDataUsingWebRTCSignaling");
     socketIO.emit("webRTC-signaling", data);
 };
